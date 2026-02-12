@@ -62,6 +62,45 @@ We evaluated three state-of-the-art models using the standard protocol defined i
 
 ---
 
+## Experiment 2: Impact of Undetected Useless Locks (Feb 2026)
+
+To justify the necessity of **Delock**, we conducted a performance analysis on **CloudLab** (bare-metal nodes) to quantify the impact of useless locks that are often overlooked by developers and LLMs.
+
+### Methodology
+We compared the original benchmark code (**V1** - with useless locks) against a corrected version (**V0** - lock removed) across four representative tests from Levels 3 and 4, with thread counts from 1 to 32.
+
+### Performance Impact Overview
+
+| Benchmark | Level | Max Throughput Loss | Scalability Trend |
+| :--- | :---: | :---: | :--- |
+| **Request Metrics** | L3 | ~80% | Flatlines early due to mutex contention. |
+| **Approximate Monitoring** | L3 | ~90% | Severe bottleneck in high-frequency path. |
+| **Degraded Mode** | L4 | **>95%** | Complete failure to scale with thread count. |
+| **Hierarchical Contract** | L4 | ~50% | Significant overhead from redundant locking. |
+
+#### Throughput Comparison
+
+````carousel
+![Request Metrics Throughput](images/plot_l3_request_metrics_throughput.png)
+<!-- slide -->
+![Approximate Monitoring Throughput](images/plot_l3_approximate_monitoring_throughput.png)
+<!-- slide -->
+![Degraded Mode Throughput](images/plot_l4_degraded_mode_throughput.png)
+<!-- slide -->
+![Hierarchical Contract Throughput](images/plot_l4_hierarchical_contract_throughput.png)
+````
+
+### Key Findings
+
+1.  **The Scalability Wall**: In tests like `Degraded Mode`, the useless lock completely prevents the program from benefiting from multiple cores. While the lockless version (V0) scales linearly, the version with the useless lock (V1) remains stuck at roughly single-thread performance.
+2.  **Syscall Overhead**: Using `strace`, we observed thousands of unnecessary `futex` system calls in the V1 variants, even when no actual data race would have occurred without the lock. This represents pure wasted kernel time.
+3.  **Silent Performance Regression**: These locks are "silent" because they don't cause crashes or incorrect results. However, they introduce non-trivial synchronization costs at the OS level that aggregate into major system inefficiencies.
+
+> [!IMPORTANT]
+> These results demonstrate that **useless locks are not benign**. Their presence significantly degrades performance and scalability, making automated detection tools like Delock essential for system efficiency.
+
+---
+
 ## Repository Structure
 
 ```
@@ -69,22 +108,20 @@ useless-locks-benchmark/
 ├── README.md
 ├── METHODOLOGY.md
 ├── AXES.md
-├── benchmarks/
-│   ├── level_0_trivial/
-│   ├── level_1_basic/
-│   ├── level_2_intermediate/
-│   ├── level_3_advanced/
-│   └── level_4_expert/
-└── results/
+├── experiment_2/       # Quantification experiment data & scripts
+│   ├── images/         # Performance plots from CloudLab
+│   └── runner.py       # Automated execution suite
+├── benchmarks/         # Core benchmark test cases
+└── results/            # LLM evaluation results
 ```
 
 Each benchmark test is fully documented and includes a ground-truth justification.
 
 ---
 
-## How to Run the Benchmark
-
-See **[PROTOCOL.md](PROTOCOL.md)** for detailed instructions on how to prompt LLMs and record results.
+## How to Run
+- **LLM Benchmark**: See **[PROTOCOL.md](PROTOCOL.md)**.
+- **Performance Experiment**: See **[experiment_2/README.md](experiment_2/README.md)** (requires Linux/strace).
 
 ## Contributing
 
