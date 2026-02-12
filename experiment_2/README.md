@@ -1,16 +1,16 @@
-# Quantification de l'impact des verrous inutiles
+# Quantifying the Impact of Unnecessary Locks
 
-Ce dossier contient les résultats de l'Expérience 2, visant à quantifier l'impact de performance des verrous inutiles.
+This folder contains the results of Experiment 2, aimed at quantifying the performance impact of unnecessary locks.
 
-## Structure du dossier
+## Folder Structure
 
-- `images/` : Graphiques générés à partir des tests CloudLab.
-- `runner.py` : Script d'exécution automatisée des benchmarks.
-- `analyze.py` : Script de génération des graphiques.
-- `results.csv` : Données brutes de l'expérience.
+- `images/`: Graphs generated from CloudLab tests.
+- `runner.py`: Automated benchmark execution script.
+- `analyze.py`: Graph generation script.
+- `results.csv`: Raw experiment data.
 
-## Comment exécuter
+## How to Run
 
-1. Installer les dépendances : `pip install pandas matplotlib`
-2. Lancer les mesures : `python runner.py`
-3. Générer les plots : `python analyze.py`
+1. Install dependencies: `pip install pandas matplotlib`
+2. Run measurements: `python runner.py`
+3. Generate plots: `python analyze.py`
