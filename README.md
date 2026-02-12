@@ -81,13 +81,13 @@ We compared the original benchmark code (**V1** - with useless locks) against a 
 #### Throughput Comparison
 
 ````carousel
-![Request Metrics Throughput](images/plot_l3_request_metrics_throughput.png)
+![Request Metrics Throughput](experiment_2/images/plot_l3_request_metrics_throughput.png)
 <!-- slide -->
-![Approximate Monitoring Throughput](images/plot_l3_approximate_monitoring_throughput.png)
+![Approximate Monitoring Throughput](experiment_2/images/plot_l3_approximate_monitoring_throughput.png)
 <!-- slide -->
-![Degraded Mode Throughput](images/plot_l4_degraded_mode_throughput.png)
+![Degraded Mode Throughput](experiment_2/images/plot_l4_degraded_mode_throughput.png)
 <!-- slide -->
-![Hierarchical Contract Throughput](images/plot_l4_hierarchical_contract_throughput.png)
+![Hierarchical Contract Throughput](experiment_2/images/plot_l4_hierarchical_contract_throughput.png)
 ````
 
 ### Key Findings
