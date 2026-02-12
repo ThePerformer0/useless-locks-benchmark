@@ -64,9 +64,6 @@ We evaluated three state-of-the-art models using the standard protocol defined i
 
 ## Experiment 2: Impact of Undetected Useless Locks (Feb 2026)
 
-To justify the necessity of **Delock**, we conducted a performance analysis on **CloudLab** (bare-metal nodes) to quantify the impact of useless locks that are often overlooked by developers and LLMs.
-
-### Methodology
 We compared the original benchmark code (**V1** - with useless locks) against a corrected version (**V0** - lock removed) across four representative tests from Levels 3 and 4, with thread counts from 1 to 32.
 
 ### Performance Impact Overview
